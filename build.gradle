@@ -1,0 +1,94 @@
+allprojects {
+    group 'org.wangguang'
+    version '1.0-SNAPSHOT'
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+}
+buildscript {
+    ext {
+        springIOVersion = '1.0.0.RELEASE'
+        springBootVersion = '1.5.9.RELEASE'
+    }
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.spring.io/release" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${springIOVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    baseName = 'bootJpa'
+    version = '0.0.1'
+    manifest {
+        attributes "Manifest-Version": 1.0,
+                'Main-Class': 'org.wangguang.controller.SampleController'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.spring.platform:platform-bom:Brussels-SR6'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Brixton.SR4'
+    }
+}
+
+ext {
+    junitVersion = '4.12'
+}
+
+dependencies {
+    compile 'org.springframework:spring-core'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-autoconfigure'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile "junit:junit:${junitVersion}"
+
+    compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-cache'
+
+    compile 'mysql:mysql-connector-java:5.1.35'
+
+    //alibaba的druid数据库连接池
+    compile 'com.alibaba:druid:1.0.11'
+    compile 'com.alibaba:druid-spring-boot-starter:1.1.0'
+
+    /*compile 'com.fasterxml.jackson.core:jackson-core:2.9.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.3'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.3'
+    compile 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.3'*/
+
+    compile 'com.github.pagehelper:pagehelper-spring-boot-starter:1.1.2'
+
+
+}
